@@ -13,7 +13,7 @@ This doesn't need to be so difficult, especially when the solution is usually to
 
 ## The MetaPkg solution
 
-A meta-package has a list of requirements, which will be used to update a local directory in your `.julia` folder.  This allows `Pkg` to handle updating in a proper way once your preferred versions are checked out or freed.
+A meta-package has a list of requirements explaining how to add/remove/checkout/free a group of related packages all at once.  This allows `Pkg` to handle updating in a proper way once your preferred versions are checked out or freed.
 
 As an example, we'll set up a new meta package for the JuliaML ecosystem.  To stay flexible, we'll assume the filename is in a constant, fixed location.  If unspecified, it uses `MetaPkg/requires`.
 
