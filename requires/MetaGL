@@ -1,12 +1,12 @@
 julia 0.5
+    GLPlot
+    GLWindow
+    GLAbstraction
+    GLVisualize
+    GeometryTypes
+    FixedSizeArrays
+    FreeType
+    Reactive master=>"sd/betterstop"
+
     tagged:
-        Contour 0.1
-    branch:
-        GLPlot
-        GLWindow
-        GLAbstraction
-        GLVisualize
-        GeometryTypes
-        FixedSizeArrays
-        FreeType
-        Reactive Dict("master" => "sd/betterstop")
+        Contour

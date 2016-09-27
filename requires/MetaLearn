@@ -1,9 +1,12 @@
 julia 0.5
     LearnBase
-    MLDataUtils     Dict("_" => "tom")
+    MLDataUtils  master=>tom
     CatViews
     JuliaML/Losses
     JuliaML/Transformations
     JuliaML/Penalties
     JuliaML/ObjectiveFunctions
     JuliaML/StochasticOptimization
+
+    tagged:
+        StatsBase

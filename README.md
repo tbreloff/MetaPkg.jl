@@ -15,35 +15,88 @@ This doesn't need to be so difficult, especially when the solution is usually to
 
 A meta-package has a list of requirements, which will be used to update a local directory in your `.julia` folder.  This allows `Pkg` to handle updating in a proper way once your preferred versions are checked out or freed.
 
-As an example, we'll set up a new meta package for the GLVisualize ecosystem.  To stay flexible, we'll assume the filename is in a constant, fixed location: `filename`:
+As an example, we'll set up a new meta package for the JuliaML ecosystem.  To stay flexible, we'll assume the filename is in a constant, fixed location.  If unspecified, it uses `MetaPkg/requires`.
 
 ```julia
 julia 0.5
+    LearnBase
+    MLDataUtils  master=>tom
+    CatViews
+    JuliaML/Losses
+    JuliaML/Transformations
+    JuliaML/Penalties
+    JuliaML/ObjectiveFunctions
+    JuliaML/StochasticOptimization
+
     tagged:
-        Contour
-    branch:
-        GLPlot
-        GLWindow
-        GLAbstraction
-        GLVisualize
-        GeometryTypes
-        FixedSizeArrays
-        FreeType
-        Reactive {master => sd/betterstop}
+        StatsBase
 ```
 
 There are a few things to note about the format:
 
-- We can have a separate section for each julia version
+- We can have a separate section for each julia version.  We'll load the last one where `VERSION >= version`.
 - The `tagged` section is for packages which we won't checkout... they stay on tagged releases.
-- The `branch` section will track those packages all on the same branch, doing a `Pkg.checkout` all to the same branch.
-- Mappings in `{...}` use alternate branches.  Use `{_ => mybranch}` to always checkout that branch.    
+- The `branch` section (label not necessary) will track those packages all on the same branch, doing a `Pkg.checkout` all to the same branch.
+- Use alternate branches by adding one or more `metabranch => pkgbranch` mappings.  Adding a branch name (without the `=>`) will **always** check out that branch.
 
-Now that the requirements are defined, we'll load this meta package:
+Now that the requirements are defined, we'll load this meta package.  Familiar commands are available: `add`, `rm`, `checkout`, and `free`:
 
 ```julia
-import MetaPkg
-MetaPkg.load_meta("MetaGL", filename)
-```
+julia> using MetaPkg
 
-Now use familiar `Pkg` commands: `checkout`, `free`, and `update`.  `MetaPkg` will make the appropriate calls to `Pkg` given your meta-spec.
+julia> MetaPkg.add("MetaLearn")
+INFO: Loading MetaSpec from /home/tom/.julia/v0.5/MetaPkg/src/../requires/MetaLearn
+INFO: Adding meta package: MetaLearn
+INFO: Going to run: Pkg.add("LearnBase")
+INFO: Going to run: Pkg.add("MLDataUtils")
+INFO: Going to run: Pkg.add("CatViews")
+INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Losses.jl")
+INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Transformations.jl")
+INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Penalties.jl")
+INFO: Going to run: Pkg.clone("git@github.com:JuliaML/ObjectiveFunctions.jl")
+INFO: Going to run: Pkg.clone("git@github.com:JuliaML/StochasticOptimization.jl")
+
+julia> MetaPkg.rm("MetaLearn")
+INFO: Removing meta package: MetaLearn
+INFO: Going to run: Pkg.rm("LearnBase")
+INFO: Going to run: Pkg.rm("MLDataUtils")
+INFO: Going to run: Pkg.rm("CatViews")
+INFO: Going to run: Pkg.rm("Losses")
+INFO: Going to run: Pkg.rm("Transformations")
+INFO: Going to run: Pkg.rm("Penalties")
+INFO: Going to run: Pkg.rm("ObjectiveFunctions")
+INFO: Going to run: Pkg.rm("StochasticOptimization")
+
+julia> MetaPkg.free("MetaLearn")
+INFO: Freeing meta package: MetaLearn
+INFO: Going to run: Pkg.free("LearnBase")
+INFO: Going to run: Pkg.free("MLDataUtils")
+INFO: Going to run: Pkg.free("CatViews")
+INFO: Going to run: Pkg.checkout("Losses", "master")
+INFO: Going to run: Pkg.checkout("Transformations", "master")
+INFO: Going to run: Pkg.checkout("Penalties", "master")
+INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "master")
+INFO: Going to run: Pkg.checkout("StochasticOptimization", "master")
+
+julia> MetaPkg.checkout("MetaLearn")
+INFO: Checking out branch master for meta package: MetaLearn
+INFO: Going to run: Pkg.checkout("LearnBase", "master")
+INFO: Going to run: Pkg.checkout("MLDataUtils", "tom")
+INFO: Going to run: Pkg.checkout("CatViews", "custom")
+INFO: Going to run: Pkg.checkout("Losses", "master")
+INFO: Going to run: Pkg.checkout("Transformations", "master")
+INFO: Going to run: Pkg.checkout("Penalties", "master")
+INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "master")
+INFO: Going to run: Pkg.checkout("StochasticOptimization", "master")
+
+julia> MetaPkg.checkout("MetaLearn", "dev")
+INFO: Checking out branch dev for meta package: MetaLearn
+INFO: Going to run: Pkg.checkout("LearnBase", "dev")
+INFO: Going to run: Pkg.checkout("MLDataUtils", "dev")
+INFO: Going to run: Pkg.checkout("CatViews", "custom")
+INFO: Going to run: Pkg.checkout("Losses", "dev")
+INFO: Going to run: Pkg.checkout("Transformations", "dev")
+INFO: Going to run: Pkg.checkout("Penalties", "dev")
+INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "dev")
+INFO: Going to run: Pkg.checkout("StochasticOptimization", "dev")
+```
