@@ -175,7 +175,7 @@ end
 
 # -----------------------------------------------------------------------
 
-function add(metaname::AbstractString, dir::AbstractString = _default_dir)
+function add(metaname::AbstractString; dir::AbstractString = _default_dir)
     add(get_spec(metaname, dir))
 end
 
@@ -198,7 +198,7 @@ end
 
 # -----------------------------------------------------------------------
 
-function rm(metaname::AbstractString, dir::AbstractString = _default_dir)
+function rm(metaname::AbstractString; dir::AbstractString = _default_dir)
     rm(get_spec(metaname, dir))
 end
 
@@ -216,7 +216,7 @@ end
 
 # -----------------------------------------------------------------------
 
-function free(metaname::AbstractString, dir::AbstractString = _default_dir)
+function free(metaname::AbstractString; dir::AbstractString = _default_dir)
     free(get_spec(metaname, dir))
 end
 
@@ -240,9 +240,8 @@ end
 
 # -----------------------------------------------------------------------
 
-function checkout(metaname::AbstractString, branch::AbstractString = "master")
-    haskey(_specs, metaname) || error("MetaSpec not loaded for $metaname.  Call MetaPkg.add or MetaPkg.load_meta")
-    checkout(_specs[metaname], branch)
+function checkout(metaname::AbstractString, branch::AbstractString = "master"; dir::AbstractString = _default_dir)
+    checkout(get_spec(metaname, dir), branch)
 end
 
 function checkout(spec::MetaSpec, branch::AbstractString = "master")
