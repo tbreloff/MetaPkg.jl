@@ -1,6 +1,6 @@
 julia 0.5
     tagged:
-        Contour
+        Contour 0.1
     branch:
         GLPlot
         GLWindow
@@ -9,4 +9,4 @@ julia 0.5
         GeometryTypes
         FixedSizeArrays
         FreeType
-        Reactive {master => sd/betterstop}
+        Reactive Dict("master" => "sd/betterstop")
