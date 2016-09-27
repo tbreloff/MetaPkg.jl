@@ -27,6 +27,10 @@ MetaSpec(name::String) = MetaSpec(name, String[], Package[])
 const _specs = Dict{String, MetaSpec}()
 const _default_dir = joinpath(dirname(@__FILE__), "..", "requires")
 const _protocol = Ref("git")
+const _do_pkg_calls = Ref(true)
+
+dry_run(dry::Bool = true) = (_do_pkg_calls[] = !dry)
+
 
 "git or https"
 setprotocol!(proto::AbstractString) = (@assert proto in ("git", "https"); _protocol[] = proto)
@@ -179,15 +183,15 @@ function add(spec::MetaSpec)
     info("Adding meta package: $(spec.name)")
     for name in spec.tagged
         info("Going to run: Pkg.add(\"$name\")")
-        Pkg.add(name)
+        _do_pkg_calls[] && Pkg.add(name)
     end
     for pkg in spec.branch
         if pkg.isregistered
             info("Going to run: Pkg.add(\"$(pkg.name)\")")
-            Pkg.add(pkg.name)
+            _do_pkg_calls[] && Pkg.add(pkg.name)
         else
             info("Going to run: Pkg.clone(\"$(pkg.url)\")")
-            Pkg.clone(pkg.url)
+            _do_pkg_calls[] && Pkg.clone(pkg.url)
         end
     end
 end
@@ -202,11 +206,11 @@ function rm(spec::MetaSpec)
     info("Removing meta package: $(spec.name)")
     for name in spec.tagged
         info("Going to run: Pkg.rm(\"$name\")")
-        Pkg.rm(name)
+        _do_pkg_calls[] && Pkg.rm(name)
     end
     for pkg in spec.branch
         info("Going to run: Pkg.rm(\"$(pkg.name)\")")
-        Pkg.rm(pkg.name)
+        _do_pkg_calls[] && Pkg.rm(pkg.name)
     end
 end
 
@@ -220,16 +224,16 @@ function free(spec::MetaSpec)
     info("Freeing meta package: $(spec.name)")
     for name in spec.tagged
         info("Going to run: Pkg.free(\"$name\")")
-        Pkg.free(name)
+        _do_pkg_calls[] && Pkg.free(name)
     end
     for pkg in spec.branch
         if pkg.isregistered
             info("Going to run: Pkg.free(\"$(pkg.name)\")")
-            Pkg.free(pkg.name)
+            _do_pkg_calls[] && Pkg.free(pkg.name)
         else
             pkgbranch = package_branch(pkg, "master")
             info("Going to run: Pkg.checkout(\"$(pkg.name)\", \"$pkgbranch\")")
-            Pkg.checkout(pkg.name, pkgbranch)
+            _do_pkg_calls[] && Pkg.checkout(pkg.name, pkgbranch)
         end
     end
 end
@@ -246,7 +250,7 @@ function checkout(spec::MetaSpec, branch::AbstractString = "master")
     for pkg in spec.branch
         pkgbranch = package_branch(pkg, branch)
         info("Going to run: Pkg.checkout(\"$(pkg.name)\", \"$pkgbranch\")")
-        Pkg.checkout(pkg.name, pkgbranch)
+        _do_pkg_calls[] && Pkg.checkout(pkg.name, pkgbranch)
     end
 end
 
