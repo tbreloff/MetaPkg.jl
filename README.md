@@ -39,7 +39,7 @@ There are a few things to note about the format:
 - The `branch` section (label not necessary) will track those packages all on the same branch, doing a `Pkg.checkout` all to the same branch.
 - Use alternate branches by adding one or more `metabranch => pkgbranch` mappings.  Adding a branch name (without the `=>`) will **always** check out that branch.
 
-Now that the requirements are defined, we'll load this meta package.  Familiar commands are available: `add`, `rm`, `checkout`, and `free`:
+Now that the requirements are defined, we'll load this meta package.  Familiar commands are available: `add`, `rm`, `checkout`, and `free`.  Note that you can test out what will happen without actually changing anything by calling `MetaPkg.dry_run()` at the beginning.
 
 ```julia
 julia> using MetaPkg
