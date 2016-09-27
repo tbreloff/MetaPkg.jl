@@ -1,4 +1,7 @@
 julia 0.5
+    Plots
+    StatPlots
+    PlotRecipes
     GLPlot
     GLWindow
     GLAbstraction

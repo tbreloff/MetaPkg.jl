@@ -44,6 +44,8 @@ Now that the requirements are defined, we'll load this meta package.  Familiar c
 ```julia
 julia> using MetaPkg
 
+julia> MetaPkg.dry_run()
+
 julia> MetaPkg.add("MetaLearn")
 INFO: Loading MetaSpec from /home/tom/.julia/v0.5/MetaPkg/src/../requires/MetaLearn
 INFO: Adding meta package: MetaLearn

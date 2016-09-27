@@ -29,7 +29,7 @@ const _default_dir = joinpath(dirname(@__FILE__), "..", "requires")
 const _protocol = Ref("git")
 const _do_pkg_calls = Ref(true)
 
-dry_run(dry::Bool = true) = (_do_pkg_calls[] = !dry)
+dry_run(dry::Bool = true) = (_do_pkg_calls[] = !dry; return)
 
 
 "git or https"
