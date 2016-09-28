@@ -4,6 +4,7 @@ julia 0.5-
     PlotRecipes
     GR
     PlotlyJS
+    Rsvg
     PyPlot
 
     meta:
