@@ -1,0 +1,10 @@
+julia 0.5-
+    Plots dev
+    StatPlots
+    PlotRecipes
+    GR
+    PlotlyJS
+    PyPlot
+
+    meta:
+        MetaGL
