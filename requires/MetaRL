@@ -1,0 +1,7 @@
+julia 0.5-
+    tbreloff/Reinforce
+    tbreloff/AtariAlgos
+    tbreloff/OpenAIGym
+    Plots dev
+    meta:
+        MetaLearn

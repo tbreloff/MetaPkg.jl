@@ -20,8 +20,9 @@ type MetaSpec
     name::String
     tagged::Vector{String}  # these are added to the REQUIRE file
     branch::Vector{Package}
+    meta::Vector{MetaSpec}
 end
-MetaSpec(name::String) = MetaSpec(name, String[], Package[])
+MetaSpec(name::AbstractString) = MetaSpec(name, String[], Package[], MetaSpec[])
 
 # maps spec_name --> MetaSpec
 const _specs = Dict{String, MetaSpec}()
@@ -84,6 +85,7 @@ function load_meta(metaname::AbstractString, dir::AbstractString = _default_dir)
     info("Loading MetaSpec from $(joinpath(dir, metaname))")
     spec = nothing
     isbranch = true
+    ismeta = false
 
     for l in eachline(f)
         tokens = split(strip(l))
@@ -99,6 +101,8 @@ function load_meta(metaname::AbstractString, dir::AbstractString = _default_dir)
             else
                 nothing
             end
+            isbranch = true
+            ismeta = false
 
         # for other lines, we only care to process if this version applies
         elseif spec != nothing
@@ -108,9 +112,22 @@ function load_meta(metaname::AbstractString, dir::AbstractString = _default_dir)
             elseif firsttoken == "branch:"
                 isbranch = true
                 continue
+            elseif firsttoken == "meta:"
+                ismeta = true
+                continue
             end
 
-            if isbranch
+            if ismeta
+                # for meta, add the spec, checking for leading directory
+                byslash = split(firsttoken, "/")
+                push!(spec.meta, if length(byslash) == 1
+                    load_meta(strip_extension(firsttoken))
+                else
+                    load_meta(strip_extension(byslash[end]), dir = join(byslash[1:end-1], "/"))
+                end)
+
+            elseif isbranch
+                # for branch section, look for <name>, <org>/<name>, or full url and add Package object
                 repo = firsttoken
                 byslash = split(repo, "/")
                 if length(byslash) == 1
@@ -151,6 +168,8 @@ function load_meta(metaname::AbstractString, dir::AbstractString = _default_dir)
                     parse_branchmap(join(tokens[2:end]))
                 ))
             else
+
+                # otherwise just add as a "tagged", meaning we don't check it out
                 push!(spec.tagged, strip(l))
             end
 
@@ -194,6 +213,9 @@ function add(spec::MetaSpec)
             _do_pkg_calls[] && Pkg.clone(pkg.url)
         end
     end
+    for subspec in spec.meta
+        add(subspec)
+    end
 end
 
 # -----------------------------------------------------------------------
@@ -211,6 +233,9 @@ function rm(spec::MetaSpec)
     for pkg in spec.branch
         info("Going to run: Pkg.rm(\"$(pkg.name)\")")
         _do_pkg_calls[] && Pkg.rm(pkg.name)
+    end
+    for subspec in spec.meta
+        rm(subspec)
     end
 end
 
@@ -236,6 +261,9 @@ function free(spec::MetaSpec)
             _do_pkg_calls[] && Pkg.checkout(pkg.name, pkgbranch)
         end
     end
+    for subspec in spec.meta
+        free(subspec)
+    end
 end
 
 # -----------------------------------------------------------------------
@@ -251,11 +279,11 @@ function checkout(spec::MetaSpec, branch::AbstractString = "master")
         info("Going to run: Pkg.checkout(\"$(pkg.name)\", \"$pkgbranch\")")
         _do_pkg_calls[] && Pkg.checkout(pkg.name, pkgbranch)
     end
+    for subspec in spec.meta
+        checkout(subspec, branch)
+    end
 end
 
-# -----------------------------------------------------------------------
-# -----------------------------------------------------------------------
-# -----------------------------------------------------------------------
 # -----------------------------------------------------------------------
 
 end # module

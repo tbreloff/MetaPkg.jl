@@ -2,6 +2,7 @@ julia 0.5
     LearnBase
     MLDataUtils  master=>tom
     CatViews
+    JuliaML/Learn
     JuliaML/Losses
     JuliaML/Transformations
     JuliaML/Penalties
