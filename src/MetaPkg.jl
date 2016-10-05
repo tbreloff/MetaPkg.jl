@@ -285,5 +285,23 @@ function checkout(spec::MetaSpec, branch::AbstractString = "master")
 end
 
 # -----------------------------------------------------------------------
+# utilities to extend Pkg
+
+"Completely remove a package, including from cache, lib, and trash."
+function purge(repo::AbstractString)
+    # normal remove
+    Pkg.rm(repo)
+
+    # purge from cache
+    cachedir = Pkg.Cache.path(repo)
+    rm(cachedir, force=true, recursive=true)
+
+
+    # purge from trash
+    pkgdir = Pkg.dir()
+    rm(joinpath(pkgdir, ".trash", repo), force=true, recursive=true)
+end
+
+# -----------------------------------------------------------------------
 
 end # module
