@@ -6,6 +6,7 @@ julia 0.5-
     PlotlyJS
     Rsvg
     PyPlot
+    pkofod/PlotThemes
 
     meta:
         MetaGL
