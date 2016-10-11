@@ -3,10 +3,12 @@ julia 0.5
     GLWindow
     GLAbstraction
     GLVisualize
-    GeometryTypes
-    FixedSizeArrays
-    FreeType
-    Reactive
+    ModernGL
+
 
     tagged:
         Contour
+        GeometryTypes
+        FixedSizeArrays
+        FreeType
+        Reactive
