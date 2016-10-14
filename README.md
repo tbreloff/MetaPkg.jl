@@ -1,5 +1,7 @@
 # MetaPkg
 
+[![Join the chat at https://gitter.im/tbreloff/MetaPkg.jl](https://badges.gitter.im/tbreloff/MetaPkg.jl.svg)](https://gitter.im/tbreloff/MetaPkg.jl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A repository of meta-packages and tools to keep them up to date.
 
 There is a common theme among organizations and individuals to have many related packages, all developed and maintained in parallel.  Currently, the workflow involves making changes, testing, iterating, and then finally tagging new versions in [METADATA](https://github.com/JuliaLang/METADATA.jl).
