@@ -3,7 +3,7 @@ julia 0.5
     MLDataUtils  master=>tom
     CatViews
     JuliaML/Learn
-    JuliaML/Losses
+    JuliaML/LossFunctions
     JuliaML/Transformations
     JuliaML/Penalties
     JuliaML/ObjectiveFunctions

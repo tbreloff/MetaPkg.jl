@@ -1,5 +1,11 @@
 module MetaPkg
 
+export
+    meta_add,
+    meta_rm,
+    meta_free,
+    meta_checkout
+
 type Package
     name::String
     url::String
@@ -192,23 +198,34 @@ function get_spec(metaname::AbstractString, dir::AbstractString = _default_dir)
     end
 end
 
-# -----------------------------------------------------------------------
-
-function add(metaname::AbstractString; dir::AbstractString = _default_dir)
-    add(get_spec(metaname, dir))
+function is_installed(name::AbstractString)
+    try
+        Pkg.installed(name) === nothing ? false: true
+    catch
+        false
+    end
 end
 
-function add(spec::MetaSpec)
+# -----------------------------------------------------------------------
+
+function meta_add(metaname::AbstractString; dir::AbstractString = _default_dir)
+    meta_add(get_spec(metaname, dir))
+end
+
+function meta_add(spec::MetaSpec)
     info("Adding meta package: $(spec.name)")
     for name in spec.tagged
+        is_installed(name) && continue
         info("Going to run: Pkg.add(\"$name\")")
         _do_pkg_calls[] && Pkg.add(name)
     end
     for pkg in spec.branch
         if pkg.isregistered
+            is_installed(pkg.name) && continue
             info("Going to run: Pkg.add(\"$(pkg.name)\")")
             _do_pkg_calls[] && Pkg.add(pkg.name)
         else
+            is_installed(pkg.name) && continue
             info("Going to run: Pkg.clone(\"$(pkg.url)\")")
             _do_pkg_calls[] && Pkg.clone(pkg.url)
         end
@@ -220,17 +237,19 @@ end
 
 # -----------------------------------------------------------------------
 
-function rm(metaname::AbstractString; dir::AbstractString = _default_dir)
-    rm(get_spec(metaname, dir))
+function meta_rm(metaname::AbstractString; dir::AbstractString = _default_dir)
+    meta_rm(get_spec(metaname, dir))
 end
 
-function rm(spec::MetaSpec)
+function meta_rm(spec::MetaSpec)
     info("Removing meta package: $(spec.name)")
     for name in spec.tagged
+        is_installed(name) || continue
         info("Going to run: Pkg.rm(\"$name\")")
         _do_pkg_calls[] && Pkg.rm(name)
     end
     for pkg in spec.branch
+        is_installed(pkg.name) || continue
         info("Going to run: Pkg.rm(\"$(pkg.name)\")")
         _do_pkg_calls[] && Pkg.rm(pkg.name)
     end
@@ -241,11 +260,11 @@ end
 
 # -----------------------------------------------------------------------
 
-function free(metaname::AbstractString; dir::AbstractString = _default_dir)
-    free(get_spec(metaname, dir))
+function meta_free(metaname::AbstractString; dir::AbstractString = _default_dir)
+    meta_free(get_spec(metaname, dir))
 end
 
-function free(spec::MetaSpec)
+function meta_free(spec::MetaSpec)
     info("Freeing meta package: $(spec.name)")
     for name in spec.tagged
         info("Going to run: Pkg.free(\"$name\")")
@@ -268,11 +287,11 @@ end
 
 # -----------------------------------------------------------------------
 
-function checkout(metaname::AbstractString, branch::AbstractString = "master"; dir::AbstractString = _default_dir)
-    checkout(get_spec(metaname, dir), branch)
+function meta_checkout(metaname::AbstractString, branch::AbstractString = "master"; dir::AbstractString = _default_dir)
+    meta_checkout(get_spec(metaname, dir), branch)
 end
 
-function checkout(spec::MetaSpec, branch::AbstractString = "master")
+function meta_checkout(spec::MetaSpec, branch::AbstractString = "master")
     info("Checking out branch $branch for meta package: $(spec.name)")
     for pkg in spec.branch
         pkgbranch = package_branch(pkg, branch)
@@ -287,6 +306,19 @@ end
 # -----------------------------------------------------------------------
 # utilities to extend Pkg
 
+function confirm_action(prompt::AbstractString="")
+    print(prompt, " Do you wish to continue? (y/n): ")
+    lowercase(chomp(readline())) in ("y", "yes")
+end
+
+function confirm_rm(path::AbstractString)
+    ispath(path) || return
+    prompt = "About to remove path $path."
+    if confirm_action(prompt)
+        Base.rm(path, force=true, recursive=true)
+    end
+end
+
 "Completely remove a package, including from cache, lib, and trash."
 function purge(repo::AbstractString)
     # normal remove
@@ -294,12 +326,15 @@ function purge(repo::AbstractString)
 
     # purge from cache
     cachedir = Pkg.Cache.path(repo)
-    rm(cachedir, force=true, recursive=true)
+    confirm_rm(cachedir)
 
+    pkgdir = Pkg.dir()
 
     # purge from trash
-    pkgdir = Pkg.dir()
-    rm(joinpath(pkgdir, ".trash", repo), force=true, recursive=true)
+    confirm_rm(joinpath(pkgdir, ".trash", repo))
+
+    # purge from lib
+    confirm_rm(joinpath(pkgdir, "..", "lib", "v$(VERSION.major).$(VERSION.minor)", repo) * ".ji")
 end
 
 # -----------------------------------------------------------------------

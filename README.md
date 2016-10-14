@@ -22,7 +22,7 @@ julia 0.5
     LearnBase
     MLDataUtils  master=>tom
     CatViews
-    JuliaML/Losses
+    JuliaML/LossFunctions
     JuliaML/Transformations
     JuliaML/Penalties
     JuliaML/ObjectiveFunctions
@@ -46,57 +46,57 @@ julia> using MetaPkg
 
 julia> MetaPkg.dry_run()
 
-julia> MetaPkg.add("MetaLearn")
+julia> meta_add("MetaLearn")
 INFO: Loading MetaSpec from /home/tom/.julia/v0.5/MetaPkg/src/../requires/MetaLearn
 INFO: Adding meta package: MetaLearn
 INFO: Going to run: Pkg.add("LearnBase")
 INFO: Going to run: Pkg.add("MLDataUtils")
 INFO: Going to run: Pkg.add("CatViews")
-INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Losses.jl")
+INFO: Going to run: Pkg.clone("git@github.com:JuliaML/LossFunctions.jl")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Transformations.jl")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Penalties.jl")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/ObjectiveFunctions.jl")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/StochasticOptimization.jl")
 
-julia> MetaPkg.rm("MetaLearn")
+julia> meta_rm("MetaLearn")
 INFO: Removing meta package: MetaLearn
 INFO: Going to run: Pkg.rm("LearnBase")
 INFO: Going to run: Pkg.rm("MLDataUtils")
 INFO: Going to run: Pkg.rm("CatViews")
-INFO: Going to run: Pkg.rm("Losses")
+INFO: Going to run: Pkg.rm("LossFunctions")
 INFO: Going to run: Pkg.rm("Transformations")
 INFO: Going to run: Pkg.rm("Penalties")
 INFO: Going to run: Pkg.rm("ObjectiveFunctions")
 INFO: Going to run: Pkg.rm("StochasticOptimization")
 
-julia> MetaPkg.free("MetaLearn")
+julia> meta_free("MetaLearn")
 INFO: Freeing meta package: MetaLearn
 INFO: Going to run: Pkg.free("LearnBase")
 INFO: Going to run: Pkg.free("MLDataUtils")
 INFO: Going to run: Pkg.free("CatViews")
-INFO: Going to run: Pkg.checkout("Losses", "master")
+INFO: Going to run: Pkg.checkout("LossFunctions", "master")
 INFO: Going to run: Pkg.checkout("Transformations", "master")
 INFO: Going to run: Pkg.checkout("Penalties", "master")
 INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "master")
 INFO: Going to run: Pkg.checkout("StochasticOptimization", "master")
 
-julia> MetaPkg.checkout("MetaLearn")
+julia> meta_checkout("MetaLearn")
 INFO: Checking out branch master for meta package: MetaLearn
 INFO: Going to run: Pkg.checkout("LearnBase", "master")
 INFO: Going to run: Pkg.checkout("MLDataUtils", "tom")
 INFO: Going to run: Pkg.checkout("CatViews", "custom")
-INFO: Going to run: Pkg.checkout("Losses", "master")
+INFO: Going to run: Pkg.checkout("LossFunctions", "master")
 INFO: Going to run: Pkg.checkout("Transformations", "master")
 INFO: Going to run: Pkg.checkout("Penalties", "master")
 INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "master")
 INFO: Going to run: Pkg.checkout("StochasticOptimization", "master")
 
-julia> MetaPkg.checkout("MetaLearn", "dev")
+julia> meta_checkout("MetaLearn", "dev")
 INFO: Checking out branch dev for meta package: MetaLearn
 INFO: Going to run: Pkg.checkout("LearnBase", "dev")
 INFO: Going to run: Pkg.checkout("MLDataUtils", "dev")
 INFO: Going to run: Pkg.checkout("CatViews", "custom")
-INFO: Going to run: Pkg.checkout("Losses", "dev")
+INFO: Going to run: Pkg.checkout("LossFunctions", "dev")
 INFO: Going to run: Pkg.checkout("Transformations", "dev")
 INFO: Going to run: Pkg.checkout("Penalties", "dev")
 INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "dev")
