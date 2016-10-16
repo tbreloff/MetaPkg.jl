@@ -4,7 +4,8 @@ export
     meta_add,
     meta_rm,
     meta_free,
-    meta_checkout
+    meta_checkout,
+    @meta
 
 type Package
     name::String
@@ -338,5 +339,7 @@ function purge(repo::AbstractString)
 end
 
 # -----------------------------------------------------------------------
+
+include("macros.jl")
 
 end # module
