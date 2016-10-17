@@ -334,10 +334,7 @@ function purge(repo::AbstractString)
     confirm_rm(joinpath(pkgdir, "..", "lib", "v$(VERSION.major).$(VERSION.minor)", repo) * ".ji")
 
     # purge from cache
-    try
-        cachedir = Pkg.Cache.path(repo)
-        confirm_rm(cachedir)
-    end
+    confirm_rm(joinpath(pkgdir, ".cache", repo))
 end
 
 # -----------------------------------------------------------------------
