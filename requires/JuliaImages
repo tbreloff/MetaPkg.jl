@@ -1,0 +1,14 @@
+julia 0.5
+    ColorTypes
+    Colors
+    ColorVectorSpace
+    Images
+    ImageCore
+    ImageFiltering
+    ImageAxes
+    ImageMetadata
+    ImageMagick
+    NRRD
+    Netpbm
+    ImageView
+    FixedPointNumbers "fixed-renaming" => "teh/compact_printing"

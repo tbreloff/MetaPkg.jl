@@ -288,6 +288,12 @@ end
 
 # -----------------------------------------------------------------------
 
+function do_checkout(name, branchname)
+    repo = LibGit2.GitRepo(Pkg.dir(name))
+    LibGit2.fetch(repo)
+    Pkg.checkout(name, branchname)
+end
+
 function meta_checkout(metaname::AbstractString, branch::AbstractString = "master"; dir::AbstractString = _default_dir)
     meta_checkout(get_spec(metaname, dir), branch)
 end
@@ -297,7 +303,7 @@ function meta_checkout(spec::MetaSpec, branch::AbstractString = "master")
     for pkg in spec.branch
         pkgbranch = package_branch(pkg, branch)
         info("Going to run: Pkg.checkout(\"$(pkg.name)\", \"$pkgbranch\")")
-        _do_pkg_calls[] && Pkg.checkout(pkg.name, pkgbranch)
+        _do_pkg_calls[] && do_checkout(pkg.name, pkgbranch)
     end
     for subspec in spec.meta
         checkout(subspec, branch)
@@ -322,19 +328,42 @@ end
 
 "Completely remove a package, including from cache, lib, and trash."
 function purge(repo::AbstractString)
-    # normal remove
-    Pkg.rm(repo)
+    info("Going to purge $repo... This means using Pkg.rm and then deleting traces in the .julia folder.")
+    gotspec = false
+    try
+        # first try to purge a meta spec
+        spec = get_spec(repo)
+        gotspec = true
+        for name in spec.tagged
+            purge(name)
+        end
+        for pkg in spec.branch
+            purge(pkg.name)
+        end
+        for subspec in spec.meta
+            purge(subspec.name)
+        end
+        return
+    catch
+        gotspec && rethrow()
+    end
 
-    pkgdir = Pkg.dir()
+    if !gotspec
+        # normal remove
+        Pkg.rm(repo)
 
-    # purge from trash
-    confirm_rm(joinpath(pkgdir, ".trash", repo))
+        pkgdir = Pkg.dir()
 
-    # purge from lib
-    confirm_rm(joinpath(pkgdir, "..", "lib", "v$(VERSION.major).$(VERSION.minor)", repo) * ".ji")
+        # purge from trash
+        confirm_rm(joinpath(pkgdir, ".trash", repo))
 
-    # purge from cache
-    confirm_rm(joinpath(pkgdir, ".cache", repo))
+        # purge from lib
+        confirm_rm(joinpath(pkgdir, "..", "lib", "v$(VERSION.major).$(VERSION.minor)", repo) * ".ji")
+
+        # purge from cache
+        confirm_rm(joinpath(pkgdir, ".cache", repo))
+    end
+    return
 end
 
 # -----------------------------------------------------------------------
