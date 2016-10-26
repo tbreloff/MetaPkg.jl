@@ -8,6 +8,7 @@ julia 0.5
     JuliaML/Penalties
     JuliaML/ObjectiveFunctions
     JuliaML/StochasticOptimization
+    cstjean/QuickTypes
 
     tagged:
         StatsBase
