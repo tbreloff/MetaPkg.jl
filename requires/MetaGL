@@ -4,6 +4,7 @@ julia 0.5
     GLAbstraction
     GLVisualize
     ModernGL
+    SignedDistanceFields
 
 
     tagged:
