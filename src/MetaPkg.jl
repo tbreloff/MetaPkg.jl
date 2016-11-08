@@ -232,7 +232,7 @@ function meta_add(spec::MetaSpec)
         end
     end
     for subspec in spec.meta
-        add(subspec)
+        meta_add(subspec)
     end
 end
 
