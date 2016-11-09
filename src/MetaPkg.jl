@@ -306,7 +306,7 @@ function meta_checkout(spec::MetaSpec, branch::AbstractString = "master")
         _do_pkg_calls[] && do_checkout(pkg.name, pkgbranch)
     end
     for subspec in spec.meta
-        checkout(subspec, branch)
+        meta_checkout(subspec, branch)
     end
 end
 
