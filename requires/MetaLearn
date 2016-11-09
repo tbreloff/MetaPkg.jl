@@ -1,8 +1,7 @@
 julia 0.5
     LearnBase
-    MLDataUtils  master=>refactor0.5
+    MLDataUtils
     CatViews
-    JuliaML/Learn
     JuliaML/LossFunctions
     JuliaML/Transformations
     JuliaML/Penalties

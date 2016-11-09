@@ -5,6 +5,7 @@ export
     meta_rm,
     meta_free,
     meta_checkout,
+    meta_test,
     @meta
 
 type Package
@@ -364,6 +365,46 @@ function purge(repo::AbstractString)
         confirm_rm(joinpath(pkgdir, ".cache", repo))
     end
     return
+end
+
+# -----------------------------------------------------------------------
+
+using Base.Test
+
+function meta_test(metaname::AbstractString; dir::AbstractString = _default_dir)
+    meta_test(get_spec(metaname, dir))
+end
+
+function meta_test(spec::MetaSpec)
+    @testset "meta_test" begin
+        failed = []
+
+        for name in spec.tagged
+            do_test(name, failed)
+        end
+        for pkg in spec.branch
+            do_test(pkg.name, failed)
+        end
+        for subspec in spec.meta
+            meta_test(subspec.name)
+        end
+    end
+
+    if !isempty(failed)
+        warn("The following packages failed the tests:\n    $(join(failed, "\n    "))")
+    end
+end
+
+function do_test(pkg::AbstractString, failed::Vector)
+    info("Running tests for $pkg")
+    try
+        Pkg.test(pkg)
+        @test true
+    catch err
+        warn(pkg, " had test errors")
+        push!(failed, pkg)
+        @test false
+    end
 end
 
 # -----------------------------------------------------------------------
