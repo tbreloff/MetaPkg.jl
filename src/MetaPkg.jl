@@ -233,7 +233,7 @@ function meta_add(spec::MetaSpec)
         end
     end
     for subspec in spec.meta
-        add(subspec)
+        meta_add(subspec)
     end
 end
 
@@ -256,7 +256,7 @@ function meta_rm(spec::MetaSpec)
         _do_pkg_calls[] && Pkg.rm(pkg.name)
     end
     for subspec in spec.meta
-        rm(subspec)
+        meta_rm(subspec)
     end
 end
 
@@ -283,7 +283,7 @@ function meta_free(spec::MetaSpec)
         end
     end
     for subspec in spec.meta
-        free(subspec)
+        meta_free(subspec)
     end
 end
 
