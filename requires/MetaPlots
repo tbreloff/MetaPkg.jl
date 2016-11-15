@@ -1,12 +1,13 @@
-julia 0.5-
+julia 0.5
     Plots dev
     StatPlots
     PlotRecipes
+    NetworkLayout
     GR
     PlotlyJS
     Rsvg
     PyPlot
-    pkofod/PlotThemes
+    PlotThemes
 
     meta:
         MetaGL
