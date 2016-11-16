@@ -1,0 +1,7 @@
+julia 0.5
+    Plots dev
+    PlotUtils
+    StatPlots
+    PlotRecipes
+    NetworkLayout
+    PlotThemes
