@@ -388,10 +388,10 @@ function meta_test(spec::MetaSpec)
         for subspec in spec.meta
             meta_test(subspec.name)
         end
-    end
 
-    if !isempty(failed)
-        warn("The following packages failed the tests:\n    $(join(failed, "\n    "))")
+        if !isempty(failed)
+            warn("The following packages failed the tests:\n    $(join(failed, "\n    "))")
+        end
     end
 end
 
