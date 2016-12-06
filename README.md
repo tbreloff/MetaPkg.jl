@@ -26,7 +26,7 @@ julia 0.5
     CatViews
     JuliaML/LossFunctions
     JuliaML/Transformations
-    JuliaML/Penalties
+    JuliaML/PenaltyFunctions
     JuliaML/ObjectiveFunctions
     JuliaML/StochasticOptimization
 
@@ -56,7 +56,7 @@ INFO: Going to run: Pkg.add("MLDataUtils")
 INFO: Going to run: Pkg.add("CatViews")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/LossFunctions.jl")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Transformations.jl")
-INFO: Going to run: Pkg.clone("git@github.com:JuliaML/Penalties.jl")
+INFO: Going to run: Pkg.clone("git@github.com:JuliaML/PenaltyFunctions.jl")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/ObjectiveFunctions.jl")
 INFO: Going to run: Pkg.clone("git@github.com:JuliaML/StochasticOptimization.jl")
 
@@ -67,7 +67,7 @@ INFO: Going to run: Pkg.rm("MLDataUtils")
 INFO: Going to run: Pkg.rm("CatViews")
 INFO: Going to run: Pkg.rm("LossFunctions")
 INFO: Going to run: Pkg.rm("Transformations")
-INFO: Going to run: Pkg.rm("Penalties")
+INFO: Going to run: Pkg.rm("PenaltyFunctions")
 INFO: Going to run: Pkg.rm("ObjectiveFunctions")
 INFO: Going to run: Pkg.rm("StochasticOptimization")
 
@@ -78,7 +78,7 @@ INFO: Going to run: Pkg.free("MLDataUtils")
 INFO: Going to run: Pkg.free("CatViews")
 INFO: Going to run: Pkg.checkout("LossFunctions", "master")
 INFO: Going to run: Pkg.checkout("Transformations", "master")
-INFO: Going to run: Pkg.checkout("Penalties", "master")
+INFO: Going to run: Pkg.checkout("PenaltyFunctions", "master")
 INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "master")
 INFO: Going to run: Pkg.checkout("StochasticOptimization", "master")
 
@@ -89,7 +89,7 @@ INFO: Going to run: Pkg.checkout("MLDataUtils", "tom")
 INFO: Going to run: Pkg.checkout("CatViews", "custom")
 INFO: Going to run: Pkg.checkout("LossFunctions", "master")
 INFO: Going to run: Pkg.checkout("Transformations", "master")
-INFO: Going to run: Pkg.checkout("Penalties", "master")
+INFO: Going to run: Pkg.checkout("PenaltyFunctions", "master")
 INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "master")
 INFO: Going to run: Pkg.checkout("StochasticOptimization", "master")
 
@@ -100,7 +100,7 @@ INFO: Going to run: Pkg.checkout("MLDataUtils", "dev")
 INFO: Going to run: Pkg.checkout("CatViews", "custom")
 INFO: Going to run: Pkg.checkout("LossFunctions", "dev")
 INFO: Going to run: Pkg.checkout("Transformations", "dev")
-INFO: Going to run: Pkg.checkout("Penalties", "dev")
+INFO: Going to run: Pkg.checkout("PenaltyFunctions", "dev")
 INFO: Going to run: Pkg.checkout("ObjectiveFunctions", "dev")
 INFO: Going to run: Pkg.checkout("StochasticOptimization", "dev")
 ```

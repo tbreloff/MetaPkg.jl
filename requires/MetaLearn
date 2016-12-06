@@ -4,7 +4,7 @@ julia 0.5
     CatViews
     JuliaML/LossFunctions
     JuliaML/Transformations
-    JuliaML/Penalties
+    JuliaML/PenaltyFunctions
     JuliaML/ObjectiveFunctions
     JuliaML/StochasticOptimization
     cstjean/QuickTypes
