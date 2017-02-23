@@ -7,6 +7,7 @@ julia 0.5
     JuliaML/PenaltyFunctions
     JuliaML/ObjectiveFunctions
     JuliaML/StochasticOptimization
+    JuliaML/LearningStrategies
     cstjean/QuickTypes
 
     tagged:
