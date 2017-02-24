@@ -1,6 +1,6 @@
-julia 0.5-
-    tbreloff/Reinforce
-    tbreloff/AtariAlgos
-    tbreloff/OpenAIGym
+julia 0.5
+    JuliaML/Reinforce
+    JuliaML/AtariAlgos
+    JuliaML/OpenAIGym
     meta:
         MetaLearn
